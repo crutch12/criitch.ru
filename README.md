@@ -19,6 +19,15 @@ cd ./criitch.ru
 $ sudo sh install.sh
 ```
 
+## CloudFlare DNS
+
+1) https://dash.cloudflare.com/
+2) create site
+3) change domain dns servers - set Cloudflare Nameservers in your Domain Registrar (e.g. reg.ru)
+4) wait up to 24h
+
+see https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/
+
 ## Generate certificate (certbot)
 
 Setup:
