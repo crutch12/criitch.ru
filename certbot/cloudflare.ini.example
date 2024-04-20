@@ -1,0 +1,2 @@
+dns_cloudflare_email = "mail@example.com"
+dns_cloudflare_api_key = "YOUR_API_KEY"

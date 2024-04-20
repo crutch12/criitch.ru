@@ -1,0 +1,4 @@
+.env
+cloudflare.ini
+cert.pem
+key.pem
