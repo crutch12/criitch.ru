@@ -4,11 +4,11 @@ services:
   nginx:
     image: nginx:1.23.3
     restart: always
-    # монтируем директорию nginx и сертификат с ключом
+    # монтируем директорию nginx и сертификаты с ключами
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/cert.pem:/etc/cert.pem
-      - ./nginx/key.pem:/etc/key.pem
+      - ./nginx/root-cert:/etc/root-cert
+      - ./nginx/sub-cert:/etc/sub-cert
     ports:
       - "80:80"
       - "443:443"
