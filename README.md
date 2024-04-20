@@ -40,6 +40,18 @@ $ cd ./certbot
 $ docker compose up certbot --build
 ```
 
+### Regenerate certificate every month (cron)
+
+```sh
+# update cron
+$ crontab -e
+```
+
+Add (_replace /path/to/criitch.ru/certbot_)
+```
+@monthly cd /path/to/criitch.ru/certbot && docker compose up certbot --build
+```
+
 ## Run nginx (and other services)
 
 ```sh
