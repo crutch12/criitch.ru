@@ -29,6 +29,6 @@ services:
     # ports:
     #   - "9000:80"
     #   - "1-65535:1-65535"
-    command: "node -r esm ./bin/server --port 9000 --domain lt.criitch.ru"
+    command: "node -r esm ./bin/server --port 9000 --domain lt.criitch.ru --secure"
     environment:
       - DEBUG=*
