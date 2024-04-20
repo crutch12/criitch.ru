@@ -16,3 +16,4 @@ services:
       args:
         DOMAIN_EMAIL: ${DOMAIN_EMAIL}
         DOMAIN_URL: ${DOMAIN_URL}
+        SUB_DOMAIN_URL: ${SUB_DOMAIN_URL}
