@@ -2,9 +2,9 @@ criitch.ru
 
 ## Requirements
 
-- ubuntu:20.04
-- domain (e.g. example.com)
-- dns (cloudflare) resolves this VPS
+- `ubuntu:20.04`
+- domain (e.g. `example.com`)
+- dns (**cloudflare**) resolves this VPS
 
 ## Download
 
@@ -22,8 +22,8 @@ $ sudo sh install.sh
 ## Generate certificate (certbot)
 
 Setup:
-- create ./certbot/.env (from ./cerbot/.env.example)
-- create ./certbot/cloudflare.ini (from ./certbot/cloudflare.ini.example)
+- create `./certbot/.env` (from `./cerbot/.env.example`)
+- create `./certbot/cloudflare.ini` (from `./certbot/cloudflare.ini.example`)
 
 Run
 ```sh
