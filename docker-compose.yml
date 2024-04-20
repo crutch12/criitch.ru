@@ -12,9 +12,23 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   front:
     restart: always
     image: crccheck/hello-world
     ports:
-        - "3000:8000"
+      - "3000:8000"
+
+  localtunnel:
+    restart: always
+    image: defunctzombie/localtunnel-server
+    # Делаю "host", т.к. пока не удалось разобраться с ports (падает, не может открыть)
+    network_mode: "host"     
+    # ports:
+    #   - "9000:80"
+    #   - "1-65535:1-65535"
+    command: "node -r esm ./bin/server --port 9000 --domain lt.criitch.ru"
+    environment:
+      - DEBUG=*
