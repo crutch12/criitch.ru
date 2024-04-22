@@ -9,7 +9,7 @@ criitch.ru
 ## Download
 
 ```sh
-git pull git@github.com:crutch12/criitch.ru.git
+git clone git@github.com:crutch12/criitch.ru.git
 cd ./criitch.ru
 ```
 
