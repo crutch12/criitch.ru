@@ -9,6 +9,7 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/root-cert:/etc/root-cert
       - ./nginx/sub-cert:/etc/sub-cert
+      - ./nginx/bunl-cert:/etc/bunl-cert
     ports:
       - "80:80"
       - "443:443"
@@ -32,3 +33,71 @@ services:
     command: "node -r esm ./bin/server --port 9000 --domain lt.criitch.ru --secure"
     environment:
       - DEBUG=*
+
+  restarter:
+    image: docker:cli
+    volumes: ["/var/run/docker.sock:/var/run/docker.sock"]
+    # @NOTE: Рестартим localtunnel каждые 30 минут, т.к. он тупит почему-то с next.js
+    command: ["/bin/sh", "-c", "while true; do sleep 1800; docker restart ssl-docker-nexus-localtunnel-1; done"]
+    restart: unless-stopped
+
+  # bunl:
+  #   restart: always
+  #   build:
+  #     context: ../bunl
+  #     dockerfile: Dockerfile
+  #   network_mode: "host"     
+  #   # network_mode: "host"     
+  #   # ports:
+  #     # - "9000:80"
+  #   #   - "1-65535:1-65535"
+  #   # command: "node -r esm ./bin/server --port 9000 --domain lt.criitch.ru --secure"
+  #   environment:
+  #     - PORT=1234
+  #     - SCHEME=https
+  #     - DOMAIN=bunl.criitch.ru
+
+  wg-easy:
+    env_file:
+      - ./wireguard/.env
+    environment:
+      # Change Language:
+      # (Supports: en, ua, ru, tr, no, pl, fr, de, ca, es, ko, vi, nl, is, pt, chs, cht, it, th, hi)
+      - LANG=en
+      # ⚠️ Required:
+      # Change this to your host's public address
+      - WG_HOST=wg.criitch.ru
+
+      # Optional:
+      # - PASSWORD=test
+      # - PORT=51821
+      # - WG_PORT=51820
+      # - WG_DEFAULT_ADDRESS=10.8.0.x
+      # - WG_DEFAULT_DNS=1.1.1.1
+      # - WG_MTU=1420
+      # - WG_ALLOWED_IPS=
+      # - WG_PERSISTENT_KEEPALIVE=25
+      # - WG_PRE_UP=echo "Pre Up" > /etc/wireguard/pre-up.txt
+      # - WG_POST_UP=echo "Post Up" > /etc/wireguard/post-up.txt
+      # - WG_PRE_DOWN=echo "Pre Down" > /etc/wireguard/pre-down.txt
+      # - WG_POST_DOWN=echo "Post Down" > /etc/wireguard/post-down.txt
+      # - UI_TRAFFIC_STATS=true
+      # - UI_CHART_TYPE=0 # (0 Charts disabled, 1 # Line chart, 2 # Area chart, 3 # Bar chart)
+
+    image: ghcr.io/wg-easy/wg-easy
+    container_name: wg-easy
+    volumes:
+      - etc_wireguard:/etc/wireguard
+    ports:
+      - "51820:51820/udp"
+      - "51821:51821/tcp"
+    restart: always
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
+
+volumes:
+  etc_wireguard:
