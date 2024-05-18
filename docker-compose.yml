@@ -59,6 +59,9 @@ services:
       - VUE_APP_URL_BASE_API=https://n8n.criitch.ru/
       - WEBHOOK_TUNNEL_URL=https://n8n.criitch.ru/
       - N8N_LICENSE_SERVER_URL=https://license.n8n.i/v1
+      # https://docs.n8n.io/hosting/configuration/configuration-examples/modules-in-code-node/
+      - NODE_FUNCTION_ALLOW_BUILTIN=*
+      - NODE_FUNCTION_ALLOW_EXTERNAL=*
 
   # bunl:
   #   restart: always
