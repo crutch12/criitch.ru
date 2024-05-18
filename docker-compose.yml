@@ -50,6 +50,7 @@ services:
       # - 5678:80
     volumes:
       - n8n_data:/home/node/.n8n
+      - ./libs/@n8n_io/license-sdk/dist:/usr/local/lib/node_modules/n8n/node_modules/@n8n_io/license-sdk/dist
     environment:
       - N8N_HOST=n8n.criitch.ru/
       - N8N_PORT=5678
@@ -57,6 +58,7 @@ services:
       - WEBHOOK_URL=https://n8n.criitch.ru/
       - VUE_APP_URL_BASE_API=https://n8n.criitch.ru/
       - WEBHOOK_TUNNEL_URL=https://n8n.criitch.ru/
+      - N8N_LICENSE_SERVER_URL=https://license.n8n.i/v1
 
   # bunl:
   #   restart: always
