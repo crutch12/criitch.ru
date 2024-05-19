@@ -43,7 +43,9 @@ services:
 
   n8n:
     restart: always
-    image: "docker.n8n.io/n8nio/n8n"
+    build: 
+      context: ./n8n
+    # image: "docker.n8n.io/n8nio/n8n:1.41.1"
     # ports:
       # - 5678:5678
       # - 5678:5678
@@ -59,6 +61,7 @@ services:
       - VUE_APP_URL_BASE_API=https://n8n.criitch.ru/
       - WEBHOOK_TUNNEL_URL=https://n8n.criitch.ru/
       - N8N_LICENSE_SERVER_URL=https://license.n8n.i/v1
+      - GENERIC_TIMEZONE=Europe/Moscow
       # https://docs.n8n.io/hosting/configuration/configuration-examples/modules-in-code-node/
       - NODE_FUNCTION_ALLOW_BUILTIN=*
       - NODE_FUNCTION_ALLOW_EXTERNAL=*
