@@ -26,7 +26,7 @@ services:
     restart: always
     image: defunctzombie/localtunnel-server
     # Делаю "host", т.к. пока не удалось разобраться с ports (падает, не может открыть)
-    network_mode: "host"     
+    network_mode: "host"
     # ports:
     #   - "9000:80"
     #   - "1-65535:1-65535"
@@ -36,17 +36,17 @@ services:
 
   restarter:
     image: docker:cli
-    volumes: ["/var/run/docker.sock:/var/run/docker.sock"]
+    volumes: [ "/var/run/docker.sock:/var/run/docker.sock" ]
     # @NOTE: Рестартим localtunnel каждые 30 минут, т.к. он тупит почему-то с next.js
-    command: ["/bin/sh", "-c", "while true; do sleep 1800; docker restart ssl-docker-nexus-localtunnel-1; done"]
+    command: [ "/bin/sh", "-c", "while true; do sleep 1800; docker restart ssl-docker-nexus-localtunnel-1; done" ]
     restart: unless-stopped
 
   n8n:
     restart: always
-    build: 
+    build:
       context: ./n8n
-    # image: "docker.n8n.io/n8nio/n8n:1.41.1"
-    # ports:
+      # image: "docker.n8n.io/n8nio/n8n:1.41.1"
+      # ports:
       # - 5678:5678
       # - 5678:5678
       # - 5678:80
@@ -54,12 +54,12 @@ services:
       - n8n_data:/home/node/.n8n
       - ./libs/@n8n_io/license-sdk/dist:/usr/local/lib/node_modules/n8n/node_modules/@n8n_io/license-sdk/dist
     environment:
-      - N8N_HOST=n8n.criitch.ru/
+      - N8N_HOST=n8n.criitch.ru
       - N8N_PORT=5678
       - N8N_PROTOCOL=https
-      - WEBHOOK_URL=https://n8n.criitch.ru/
-      - VUE_APP_URL_BASE_API=https://n8n.criitch.ru/
-      - WEBHOOK_TUNNEL_URL=https://n8n.criitch.ru/
+      - WEBHOOK_URL=https://n8n.criitch.ru
+      - VUE_APP_URL_BASE_API=https://n8n.criitch.ru
+      - WEBHOOK_TUNNEL_URL=https://n8n.criitch.ru
       - N8N_LICENSE_SERVER_URL=https://license.n8n.i/v1
       - GENERIC_TIMEZONE=Europe/Moscow
       # https://docs.n8n.io/hosting/configuration/configuration-examples/modules-in-code-node/
@@ -92,7 +92,6 @@ services:
       # ⚠️ Required:
       # Change this to your host's public address
       - WG_HOST=wg.criitch.ru
-
       # Optional:
       # - PASSWORD=test
       # - PORT=51821
@@ -123,6 +122,25 @@ services:
     sysctls:
       - net.ipv4.ip_forward=1
       - net.ipv4.conf.all.src_valid_mark=1
+  dumbproxy:
+    image: ghcr.io/senseunit/dumbproxy
+    restart: unless-stopped
+    ports:
+      - 9080:8080
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
+    volumes:
+      - ./dumbproxy/dumbproxy.htpasswd:/etc/dumbproxy.htpasswd
+    command: -auth basicfile://?path=/etc/dumbproxy.htpasswd
+
+  zdrav-bot:
+    image: crutch12/zdrav-bot
+    restart: unless-stopped
+    ports:
+      - 7070:7070
+    env_file:
+      - ./zdrav-bot/.env
 
 volumes:
   etc_wireguard:
